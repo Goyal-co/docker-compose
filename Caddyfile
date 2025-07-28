@@ -7,15 +7,12 @@ http://api.goyalhariyanacrm.in {
     redir https://api.goyalhariyanacrm.in{uri} permanent
 }
 
-#http://13.204.5.231:5000 {
-#       reverse_proxy crm_server:5000
-#}
-
-# HTTPS site
+# HTTPS site - Frontend
 https://crm.goyalhariyanacrm.in {
     reverse_proxy crm_frontend:80
 }
 
+# HTTPS API - Backend
 https://api.goyalhariyanacrm.in {
-    reverse_proxy server:5000
+    reverse_proxy crm_backend:5000
 }
