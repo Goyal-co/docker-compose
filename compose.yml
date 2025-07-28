@@ -1,37 +1,41 @@
 services:
-  server:
-    build:
-      context: ./CRM_server
-    container_name: titan_server
-#    ports:
-#      - "5000:5000"
-    networks:
-      - titan_network
-    environment:
-      - NODE_ENV=production
-
   crm_frontend:
     build:
       context: ./CRM_frontend
-    container_name: titan_frontend
-#    ports:
-#      - "8080:80"
+      dockerfile: Dockerfile
     networks:
-      - titan_network
+      - app-network
+    depends_on:
+      - crm_backend
+
+  crm_backend:
+    build:
+      context: ./CRM_server
+      dockerfile: Dockerfile
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
 
   caddy:
     image: caddy:alpine
-    container_name: titan_caddy
-    restart: unless-stopped
     ports:
-      - "80:80"      # HTTP (for redirect)
-      - "443:443"    # HTTPS
-#      - "5000:5000"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
     networks:
-      - titan_network
+      - app-network
+    depends_on:
+      - crm_frontend
+      - crm_backend
 
 networks:
-  titan_network:
+  app-network:
     driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
