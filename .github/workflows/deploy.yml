@@ -1,0 +1,34 @@
+name: Deploy to Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo (optional, for context)
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy via SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            set -e
+            cd ${{ secrets.WORK_DIR }}
+            echo "Pulling CRM_frontend..."
+            cd CRM_frontend && git pull
+            cd ..
+            echo "Pulling CRM_server..."
+            cd CRM_server && git pull
+            cd ..
+            echo "Restarting Docker Compose stack..."
+            docker compose down
+            docker compose up --build -d
+            docker image prune -f
+          EOF
