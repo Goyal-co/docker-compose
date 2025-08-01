@@ -1,7 +1,3 @@
-Certainly! Here’s a **README.md** for your [docker-compose](https://github.com/Goyal-co/docker-compose) repo, designed to be clear for both you and collaborators:
-
----
-
 # CRM Docker Compose Deployment
 
 This repository contains the **Docker Compose setup** and **Caddy reverse proxy configuration** for deploying the CRM application, which consists of a frontend and backend service.
@@ -122,5 +118,3 @@ Feel free to open issues or submit pull requests for improvements or bug fixes.
 MIT License
 
 ---
-
-**Happy deploying! 🚀**
