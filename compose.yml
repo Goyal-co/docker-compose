@@ -32,6 +32,23 @@ services:
       - crm_frontend
       - crm_backend
 
+   # Lazydocker Web Service
+  lazydocker-web:
+    build: ./lazydocker-web
+    container_name: lazydocker-web
+    restart: unless-stopped
+#    ports:
+#      - "7681:7681"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./lazydocker-web/config.yml:/root/.config/lazydocker/config.yml
+    networks:
+      - caddy
+    depends_on:
+      - crm_frontend
+      - crm_backend
+      - caddy 
+
 networks:
   app-network:
     driver: bridge
