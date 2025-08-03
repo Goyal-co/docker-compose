@@ -16,3 +16,12 @@ https://crm.goyalhariyanacrm.in {
 https://api.goyalhariyanacrm.in {
     reverse_proxy crm_backend:5000
 }
+
+# LazyDocker For Logs. Run below Command to generate password hash
+# sudo docker run --rm caddy:latest caddy hash-password --plaintext 'yourStrongPassword'
+https://logs.goyalhariyanacrm.in {
+    basic_auth {
+        admin $2a$14$VzMr0deD1LOiY0ExYP6xhOAoSISmrsH.f1yX8eRWyTYebGTrr7WRC
+    }
+    reverse_proxy lazydocker-web:7681
+}
